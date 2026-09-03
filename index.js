@@ -39,7 +39,8 @@ app.command("/mark-1-help", async ({ command,ack, respond }) => {
   await respond({
     text:`Available Commands:
 /mark-1-ping - Check bot latency
-/mark-1-catfact - Get a cat fact`
+/mark-1-catfact - Get a cat fact
+/mark-1-joke - Get a joke`
   });
 });
 
@@ -58,3 +59,29 @@ app.command("/mark-1-catfact", async ({ ack, respond }) => {
   await app.start();
   console.log("bot is running!");
 })();
+
+
+app.command("/mark-1",async({ack,respond}) =>{
+  await ack();
+  await respond({
+    text:`Bonjour,Bonjour little guy, approach don't be scary.\nMy name is Mark-1 (catched the ref 👀),i'm here to... I don't even know why i was created for...\nDon't forget to discover other command maybe my father put something cool (or maybe not🤫)`
+  });
+});
+
+
+let startTime = null;
+app.command("/mark-1-time", async ({ command, ack, respond }) => {
+  await ack();
+  if (command.text === "start") {
+    startTime = Date.now();
+    await respond({text:`Your Chrono is started`});
+  } else if (command.text === "stop") {
+    const time = Date.now() - startTime;
+    const min = Math.floor(time/60000);
+
+    await respond({
+      text:`You have dev for ${min}`
+    });
+    startTime = null;
+  }
+});
