@@ -80,8 +80,21 @@ app.command("/mark-1-time", async ({ command, ack, respond }) => {
     const min = Math.floor(time/60000);
 
     await respond({
-      text:`You have dev for ${min}`
+      text:`You have dev for ${min} min`
     });
     startTime = null;
+  }
+});
+
+const dict = {ls:'list files in the current directory',
+  cd:'change the current directory',
+pwd:'print the current corking directory',
+ip:'show ip and network configurations',
+hostname:'show or set the systems host name',
+uname:'Print certain system information'};
+app.command("/mark-1-linux",async({command,ack,respond}) => {
+  await ack();
+  if (command.text in dict) {
+    await respond ({text:dict[command.text]});
   }
 });
