@@ -26,6 +26,32 @@ ${response.data.punchline}`
     await respond({ text: "Failed to fetch a joke." });
   }
 });
+let random;
+let request;
+let table;
+const words = ["car","hello","animal","goodbye"];
+app.command("/mark-1-dict", async ({command,ack,respond})=> {
+  await ack();
+  table = command.text.split(" ");
+  if (table[0]==="-r"){
+    try {
+      const response = await axios.get(`https://api.dictionaryapi.dev/api/v2/entries/en/${table[1]}`)
+      await respond({ text:
+        `${response.data[0].word}: ${response.data[0].meanings[0].definitions[0].definition} `
+      });
+    } catch (err) {
+      await respond({ text: "Failed to fetch the word." });
+    }
+  } else if (command.text === "-R") {
+      random = Math.floor(Math.random() * words.length);
+      request = words[random];
+      const response = await axios.get(`https://api.dictionaryapi.dev/api/v2/entries/en/${request}`)
+      await respond({ text:
+        `${response.data[0].word}: ${response.data[0].meanings[0].definitions[0].definition} `
+      });
+  }
+
+});
 
 app.command("/mark-1-ping", async ({ command, ack, respond }) => {
   const start = Date.now();
@@ -44,16 +70,6 @@ app.command("/mark-1-help", async ({ command,ack, respond }) => {
   });
 });
 
-app.command("/mark-1-catfact", async ({ ack, respond }) => {
-  await ack();
-
-  try {
-    const response = await axios.get("https://catfact.ninja/fact");
-    await respond({ text: `Cat Fact:\n${response.data.fact}` });
-  } catch (err) {
-    await respond({ text: "Failed to fetch a cat fact." });
-  }
-});
 
 (async () => {
   await app.start();
@@ -98,3 +114,4 @@ app.command("/mark-1-linux",async({command,ack,respond}) => {
     await respond ({text:dict[command.text]});
   }
 });
+
