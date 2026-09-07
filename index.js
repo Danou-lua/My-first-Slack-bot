@@ -53,12 +53,17 @@ app.command("/mark-1-dict", async ({command,ack,respond})=> {
       await respond({ text: "Failed to fetch the word." });
     }
   } else if (command.text === "-R") {
+    try {
       random = Math.floor(Math.random() * data.length);
       request = data[random];
       const response = await axios.get(`https://api.dictionaryapi.dev/api/v2/entries/en/${request}`)
       await respond({ text:
         `${response.data[0].word}: ${response.data[0].meanings[0].definitions[0].definition} `
       });
+    } catch (err) {
+      await respond({ text: "Failed to fetch the word." });
+    } 
+
   }
 
 
