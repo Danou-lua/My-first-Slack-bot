@@ -31,7 +31,6 @@ let random;
 let request;
 let table;
 let newWord;
-const words = ["car","hello","animal","goodbye"];
 app.command("/mark-1-dict", async ({command,ack,respond})=> {
   await ack();
   table = command.text.trim().split(" ");
@@ -43,7 +42,7 @@ app.command("/mark-1-dict", async ({command,ack,respond})=> {
       });
       if (data.includes(table[1])===false){
         data.push(table[1]);
-        console.log(data);
+        console.log(data)
         fs.writeFile('wordlist.json', JSON.stringify(data) , (err) => {
           
     if (err) throw err;
@@ -54,8 +53,8 @@ app.command("/mark-1-dict", async ({command,ack,respond})=> {
       await respond({ text: "Failed to fetch the word." });
     }
   } else if (command.text === "-R") {
-      random = Math.floor(Math.random() * words.length);
-      request = words[random];
+      random = Math.floor(Math.random() * data.length);
+      request = data[random];
       const response = await axios.get(`https://api.dictionaryapi.dev/api/v2/entries/en/${request}`)
       await respond({ text:
         `${response.data[0].word}: ${response.data[0].meanings[0].definitions[0].definition} `
