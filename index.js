@@ -64,9 +64,16 @@ app.command("/mark-1-dict", async ({command,ack,respond})=> {
       await respond({ text: "Failed to fetch the word." });
     } 
 
+  } else if (table[0] === "-p"){
+    try {
+      const response = await axios.get(`https://api.dictionaryapi.dev/api/v2/entries/en/${table[1]}`)
+      await respond({ text:
+        `${response.data[0].word}: ${response.data[0].phonetic[0]} `
+      });
+  } catch  (err) {
+      await respond({ text: "Failed to fetch the word." });
   }
-
-
+  }
 });
 
 app.command("/mark-1-ping", async ({ command, ack, respond }) => {
@@ -81,8 +88,12 @@ app.command("/mark-1-help", async ({ command,ack, respond }) => {
   await respond({
     text:`Available Commands:
 /mark-1-ping - Check bot latency
-/mark-1-catfact - Get a cat fact
-/mark-1-joke - Get a joke`
+/mark-1-time start/stop - start or stop the timer for dev and view your time you spend to crush your head on your keyboard
+/mark-1 - an entire description of mark-1
+/mark-1-linux [command] - view a short description of the main linux command
+/mark-1-dict [option] - an entire dictionary into your hands with a 3 options(more options in the future) -r for request -R for random and -p for phonetics, they
+are the main current options. Feel free to ask as many words as you want 
+(translation: i ask you to do unpaid labour to feed the random wordlist because is was the only option i found)`
   });
 });
 
