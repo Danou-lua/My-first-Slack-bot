@@ -76,6 +76,17 @@ app.command("/mark-1-dict", async ({command,ack,respond})=> {
   }
 });
 
+app.command("/mark-1-advice",async ({ack,respond}) => {
+  await ack()
+
+  try {
+    const response = await axios.get(`https://api.adviceslip.com/advice`)
+    await respond({text: `${response.data.slip.advice}`})
+  } catch (err){
+    await respond({text:"Failed to fetch the advice"})
+  }
+})
+
 app.command("/mark-1-ping", async ({ command, ack, respond }) => {
   const start = Date.now();
   await ack();
@@ -93,7 +104,8 @@ app.command("/mark-1-help", async ({ command,ack, respond }) => {
 /mark-1-linux [command] - view a short description of the main linux command
 /mark-1-dict [option] - an entire dictionary into your hands with a 3 options(more options in the future) -r for request -R for random and -p for phonetics, they
 are the main current options. Feel free to ask as many words as you want 
-(translation: i ask you to do unpaid labour to feed the random wordlist because is was the only option i found)`
+(translation: i ask you to do unpaid labour to feed the random wordlist because is was the only option i found)
+/mark-1-advice - give you a random advice who will help you in whole day life`
   });
 });
 
